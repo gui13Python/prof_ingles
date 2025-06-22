@@ -1,7 +1,7 @@
 {
-  "name": "Chatbot Professor de Inglês",
-  "short_name": "Prof. Inglês",
-  "description": "Seu professor virtual de inglês.",
+  "name": "Chatbot Professor de Inglês, Português, Espanhol e Francês",
+  "short_name": "Prof. de  Idiomas",
+  "description": "Bem-vindo ao seu Professor de Idiomas!.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
