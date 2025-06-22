@@ -6,9 +6,7 @@ const urlsToCache = [
   './', // Cache the root (index.html)
   './index.html',
   './manifest.json',
-  './icons/icon-192.png',
-  './icons/icon-512.png', // Ensure this icon also exists
-  // Add other assets if you have them, e.g., CSS or other JS files
+  './icons/icon-512.png', // Agora referenciando o seu icon-512.png
   // Note: External scripts like Botpress URLs are typically not cached by your service worker
   // as they are managed by their respective CDNs.
 ];
