@@ -29,52 +29,40 @@
       width: 90%;
       text-align: center;
       box-sizing: border-box;
+      position: relative; /* Necessário para posicionar o avatar absolutamente */
     }
     h1 {
       text-align: center;
       color: #2e7d32;
       margin-bottom: 15px;
+      margin-top: 20px; /* Ajuste para dar espaço ao avatar */
     }
     p {
       font-size: 1.1em;
       line-height: 1.6;
       margin-bottom: 25px;
     }
-    .button-group {
+    /* Estilos para o avatar SVG */
+    .bot-avatar {
+      width: 80px; /* Tamanho do avatar */
+      height: 80px;
+      background-color: #4CAF50; /* Cor de fundo do círculo */
+      border-radius: 50%; /* Torna-o um círculo */
       display: flex;
-      flex-direction: column;
-      gap: 10px; /* Espaço entre os botões */
-      margin-top: 20px;
+      justify-content: center;
+      align-items: center;
+      margin: -70px auto 0 auto; /* Move o avatar para fora da borda superior do container */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border: 4px solid white; /* Borda branca para destacar */
+      position: relative; /* Para que o Z-index funcione */
+      z-index: 10; /* Garante que o avatar fique acima de outros elementos */
     }
-    .speak-button, .mic-button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 20px;
-      cursor: pointer;
-      font-size: 1em;
-      transition: background-color 0.3s ease;
+    .bot-avatar svg {
+      width: 50px; /* Tamanho do ícone dentro do círculo */
+      height: 50px;
+      fill: white; /* Cor do ícone */
     }
-    .speak-button:hover, .mic-button:hover {
-      background-color: #0056b3;
-    }
-    .mic-button {
-      background-color: #28a745; /* Cor verde para o botão do microfone */
-    }
-    .mic-button:hover {
-      background-color: #218838;
-    }
-    #recognizedText {
-      margin-top: 15px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background-color: #f9f9f9;
-      min-height: 50px;
-      text-align: left;
-      word-wrap: break-word; /* Garante que o texto não exceda a largura */
-    }
+
     @media (max-width: 600px) {
       h1 {
         font-size: 1.8em;
@@ -84,6 +72,16 @@
       }
       .container {
         padding: 20px;
+        margin-top: 50px; /* Ajuste o margin-top para dispositivos móveis */
+      }
+      .bot-avatar {
+        width: 70px;
+        height: 70px;
+        margin-top: -60px; /* Ajuste para dispositivos móveis */
+      }
+      .bot-avatar svg {
+        width: 40px;
+        height: 40px;
       }
     }
   </style>
@@ -95,116 +93,19 @@
         .then(() => console.log('Service Worker registrado com sucesso!'))
         .catch(error => console.log('Falha ao registrar Service Worker:', error));
     }
-
-    // Função para Síntese de Fala (Text-to-Speech)
-    function speakText(text) {
-      if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'pt-BR'; // Define o idioma para Português do Brasil
-        window.speechSynthesis.speak(utterance);
-      } else {
-        console.warn('A API de Síntese de Fala não é suportada neste navegador.');
-        // Substituindo alert() por uma mensagem na console para evitar bloqueios
-        console.log('Seu navegador não suporta a função de leitura em voz alta.');
-      }
-    }
-
-    // Função para ler o conteúdo do container
-    function readWelcomeMessage() {
-      const welcomeHeading = document.querySelector('.container h1').innerText;
-      const welcomeParagraphs = Array.from(document.querySelectorAll('.container p')).map(p => p.innerText).join(' ');
-      const fullText = `${welcomeHeading}. ${welcomeParagraphs}`;
-      speakText(fullText);
-    }
-
-    // --- Funcionalidade de Reconhecimento de Voz (Speech-to-Text) ---
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let recognition;
-    let recognizing = false;
-
-    if (SpeechRecognition) {
-      recognition = new SpeechRecognition();
-      recognition.continuous = false; // Define para capturar uma única frase
-      recognition.interimResults = false; // Não mostra resultados provisórios
-      recognition.lang = 'pt-BR'; // Define o idioma para Português do Brasil
-
-      recognition.onstart = () => {
-        recognizing = true;
-        document.getElementById('micButton').textContent = 'A Ouvir... (Clique para parar)';
-        document.getElementById('micButton').style.backgroundColor = '#dc3545'; // Cor de gravação (vermelho)
-        console.log('Reconhecimento de voz iniciado.');
-      };
-
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        document.getElementById('recognizedText').textContent = `Você disse: "${transcript}"`;
-        // Aqui você pode adicionar lógica para enviar 'transcript' para o chatbot Botpress
-        // Exemplo (conceitual, depende da API do Botpress):
-        // botpressChatWidget.sendMessage(transcript);
-        console.log('Texto reconhecido:', transcript);
-      };
-
-      recognition.onerror = (event) => {
-        recognizing = false;
-        document.getElementById('micButton').textContent = 'Falar para o Chat';
-        document.getElementById('micButton').style.backgroundColor = '#28a745';
-        document.getElementById('recognizedText').textContent = 'Erro no reconhecimento de voz: ' + event.error;
-        console.error('Erro no reconhecimento de voz:', event.error);
-      };
-
-      recognition.onend = () => {
-        recognizing = false;
-        document.getElementById('micButton').textContent = 'Falar para o Chat';
-        document.getElementById('micButton').style.backgroundColor = '#28a745';
-        console.log('Reconhecimento de voz terminado.');
-      };
-    } else {
-      console.warn('A API de Reconhecimento de Fala não é suportada neste navegador.');
-      document.addEventListener('DOMContentLoaded', () => {
-        const micButton = document.getElementById('micButton');
-        if (micButton) {
-          micButton.style.display = 'none'; // Esconde o botão se a API não for suportada
-        }
-      });
-    }
-
-    function toggleSpeechRecognition() {
-      if (recognizing) {
-        recognition.stop();
-      } else {
-        document.getElementById('recognizedText').textContent = 'Aguardando sua fala...';
-        recognition.start();
-      }
-    }
-
-    // Adiciona listeners para os botões após o carregamento do DOM
-    document.addEventListener('DOMContentLoaded', () => {
-      const speakButton = document.getElementById('speakWelcome');
-      if (speakButton) {
-        speakButton.addEventListener('click', readWelcomeMessage);
-      }
-
-      const micButton = document.getElementById('micButton');
-      if (micButton && SpeechRecognition) { // Garante que o botão só tenha o listener se a API estiver disponível
-        micButton.addEventListener('click', toggleSpeechRecognition);
-      }
-    });
-
   </script>
 </head>
 <body>
 
   <div class="container">
-    <h1>Bem-vindo ao seu Professor de Inglês!</h1>
+    <div class="bot-avatar">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.29-6-3.22.03-1.99 4-3.83 6-3.83s5.97 1.84 6 3.83c-1.29 1.93-3.5 3.22-6 3.22z"/>
+      </svg>
+    </div>
+    <h1>Bem-vindo ao seu Professor de Idioma!</h1>
     <p>Clique no ícone de chat no canto inferior direito para começar a conversar e melhorar suas habilidades em inglês.</p>
     <p>O seu professor virtual está pronto para ajudar com vocabulário, frases, exercícios e muito mais!</p>
-
-    <div class="button-group">
-      <button id="speakWelcome" class="speak-button">Ouvir Mensagem de Boas-Vindas</button>
-      <button id="micButton" class="mic-button">Falar para o Chat</button>
-    </div>
-
-    <div id="recognizedText"></div> <!-- Área para exibir o texto reconhecido -->
   </div>
 
   <!-- Botpress Chatbot Integration -->
