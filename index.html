@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot Professor de Inglês</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-512.png"> <!-- Ajustado para o seu ícone existente -->
+  <meta name="theme-color" content="#4CAF50">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', Arial, sans-serif; /* Changed font to Inter for consistency */
+      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #333; /* Default text color */
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 30px; /* Increased padding */
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      box-sizing: border-box; /* Include padding in width */
+    }
+    h1 {
+      text-align: center;
+      color: #2e7d32; /* Darker green for heading */
+      margin-bottom: 15px;
+    }
+    p {
+      font-size: 1.1em;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8em; /* Adjusted font size for mobile */
+      }
+      p {
+        font-size: 1em;
+      }
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+
+  <script>
+    // Service Worker registration for PWA capabilities
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker registrado com sucesso!'))
+        .catch(error => console.log('Falha ao registrar Service Worker:', error));
+    }
+  </script>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Bem-vindo ao seu Professor de Inglês!</h1>
+    <p>Clique no ícone de chat no canto inferior direito para começar a conversar e melhorar suas habilidades em inglês.</p>
+    <p>O seu professor virtual está pronto para ajudar com vocabulário, frases, exercícios e muito mais!</p>
+  </div>
+
+  <!-- Botpress Chatbot Integration -->
+  <!-- This script injects the Botpress webchat widget into your page. -->
+  <!-- Ensure the Botpress project associated with this script URL is configured -->
+  <!-- to act as your English teacher chatbot. -->
+  <script src="https://cdn.botpress.cloud/webchat/v3.0/inject.js"></script>
+  <script src="https://files.bpcontent.cloud/2025/06/22/17/20250622172651-6U5NWWQ0.js"></script>
+
+</body>
+</html>
