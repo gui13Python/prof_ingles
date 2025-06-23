@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot Professor de Inglês</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-512.png">
+  <meta name="theme-color" content="#4CAF50">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', Arial, sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #333;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    h1 {
+      text-align: center;
+      color: #2e7d32;
+      margin-bottom: 15px;
+    }
+    p {
+      font-size: 1.1em;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8em;
+      }
+      p {
+        font-size: 1em;
+      }
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+
+  <script>
+    // Service Worker registration for PWA capabilities
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker registrado com sucesso!'))
+        .catch(error => console.log('Falha ao registrar Service Worker:', error));
+    }
+  </script>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Bem-vindo ao seu Professor de Idioma!</h1>
+    <p>O seu professor de Idiomas virtual, pronto para ajudar a aprimorar suas habilidades de conversação, vocabulário e compreensão. Aprenda no seu ritmo e domine o inglês com confiança! podemos falar em Português, Espanhol, Inglês e Francês.</p>
+    <p>Clique no ícone de chat no canto inferior direito para começar a conversar.</p>
+  </div>
+
+  <!-- Botpress Chatbot Integration -->
+  <script src="https://cdn.botpress.cloud/webchat/v3.0/inject.js"></script>
+  <script src="https://files.bpcontent.cloud/2025/06/22/17/20250622172651-6U5NWWQ0.js"></script>
+
+</body>
+</html>
